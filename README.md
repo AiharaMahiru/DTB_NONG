@@ -1,5 +1,8 @@
 ## 大唐杯参赛训练项目😗
 
+### 结构目录
+| ./`pgsql.py` #基于psycopg2的数据库操作
+
 ### 项目依赖
 #### python_models
 - pydantic

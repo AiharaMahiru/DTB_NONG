@@ -28,6 +28,29 @@ cur.execute("CREATE TABLE IF NOT EXISTS pesticide (id serial PRIMARY KEY, data j
 # 将字典数据插入到表中
 cur.execute("INSERT INTO pesticide (data) VALUES (%s)", [Json(json_data)])
 
+# 插入一条新的数据到 “public”.“scene” 表中
+# cur.execute('INSERT INTO "public"."scene" VALUES (%s, %s)', ('09', '智能农业'))
+
+# 更新
+# cur.execute('UPDATE "public"."scene" SET name = %s WHERE scene_id = %s;', ('5G智慧农业', '09'))
+
+# 删除
+# cur.execute('DELETE FROM "public"."scene" WHERE id = \'09\';')
+
+# 查询
+# cur.execute('SELECT * FROM "public"."scene" WHERE name LIKE \'智慧农业\';')
+
+
+# 执行查询语句
+# cur.execute('SELECT * FROM "public"."scene"')
+
+# 获取所有结果
+# rows = cur.fetchall()
+
+# 打印结果
+# for row in rows:
+#     print(row)
+
 # 提交并关闭连接
 conn.commit()
 cur.close()
