@@ -31,4 +31,4 @@ obj = {
 # 将字典数据插入到表中
 # cur.execute("INSERT INTO pesticide (data) VALUES (%s)", [Json(obj)])
 
-print(to_table_json(obj, 1, 2))
+# print(to_table_json(obj, 1, 2))
