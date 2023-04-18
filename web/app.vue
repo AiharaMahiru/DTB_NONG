@@ -52,5 +52,6 @@
         </div>
         <button @click.prevent.stop.self.once.capture.passive.lazy.native.sync.right.middle.left.auxclick.dblclick.contextmenu.mousedown.mouseup.mouseover.mouseenter.mouseleave.mouseout.mousemove.mousewheel.wheel.pointerlockchange.pointer>
         </button>
+      </div>
     </div>
 </template>
