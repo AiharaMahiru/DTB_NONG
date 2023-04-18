@@ -1,7 +1,10 @@
 ## 大唐杯参赛训练项目😗
 
 ### 结构目录
-| ./`pgsql.py` #基于psycopg2的数据库操作
+| ./lib/`pgsql.py` #基于psycopg2的数据库操作
+| -----/`api.py` #基于fastapi建立web—api
+| ./src/`xxx.json` #数据存储目录
+| ./web/`app.vue` #前端目录
 
 ### 项目依赖
 #### python_models
