@@ -65,9 +65,11 @@ def get_sql(sql, sql_content=None):
 def convert_to_builtin_type(obj):
     return obj.__dict__
 
+# 直接用json.dumps方法来转换列表的切片
 def to_table_json(obj, page, limit):
     pageObj = obj[(page - 1) * limit:page * limit]
-    j = json.dumps(pageObj, default=convert_to_builtin_type)
+    #page切片有问题
+    j = json.dumps(pageObj)
     return json.dumps({
         "code": 0,
         "count": len(obj),
