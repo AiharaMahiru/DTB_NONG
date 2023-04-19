@@ -1,5 +1,6 @@
 import psycopg2
 from psycopg2.extras import Json
+import json
 
 conn = psycopg2.connect(database='postgres', user='postgres',
                         password='aKtALRFAKCRC', host='81.68.157.7', port=5432)
@@ -33,20 +34,26 @@ if count == 0:
 
 # 执行插入操作
 placeholders: str = ", ".join(["%s"] * len(json_data))
-values: list = list(json_data.values())
-# [{'name': '敌敌畏', 'type': '杀虫剂', 'price': 10, 'count': 100, 'inventory': 100, 'info': {'用途': '杀虫', '用量': '1ml/平方米', '有效期': '1年'}}]
+# values: list = list(json_data.values())
+values = [{'name': '敌敌畏', 'type': '杀虫剂', 'price': 10, 'count': 100, 'inventory': 100, 'info': {'用途': '杀虫', '用量': '1ml/平方米', '有效期': '1年'}}]
 
-# 构造列名
-columns = ", ".join(values[0].keys())
+for d in values:
+    d['info'] = json.dumps(d['info'])
+print(type(d))
 
-# # 构造值
-values_str: str = ", ".join(["(%s)" % ", ".join(["%s"] * len(values[0]))] * len(values))
+# # 构造列名
+# columns: str = ", ".join(values[0].keys())
 
-# # 构造 SQL 语句 insert into pesticide (name, type, price, count, inventory, info) values (%s, %s, %s, %s, %s, %s)
-sql: str = "insert into pesticide (%s) values %s" % (columns, values_str)
+# # # 构造值
+# values_str: str = ", ".join(["(%s)" % ", ".join(["%s"] * len(values[0]))] * len(values))
 
-# # 执行 SQL 语句
-cur.execute(sql, [v for d in values for v in d.values()])
+# # # 构造 SQL 语句 
+# sql: str = "insert into pesticide (%s) values %s" % (columns, values_str)
+
+# s: list = [v for d in values for v in d.values()]
+
+# # # 执行 SQL 语句
+# cur.execute(sql, json.dumps(s))
 # conn.commit()
 cur.close()
 conn.close()
