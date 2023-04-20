@@ -93,6 +93,6 @@ def into_data(data):
 #     print(row)
 
 # 提交并关闭连接
-conn.commit()
-cur.close()
-conn.close()
+# conn.commit()
+# cur.close()
+# conn.close()
