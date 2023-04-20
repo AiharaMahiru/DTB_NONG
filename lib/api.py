@@ -13,18 +13,7 @@ cur = conn.cursor()
 async def add_pesticide(request: Request):
     # 获取请求体中的json数据
     data = await request.json()
-    # 判断表 pesticide 是否存在
-    cur.execute("select count(*) from information_schema.tables where table_schema='public' and table_type='BASE TABLE' and table_name='pesticide'")
-    count = cur.fetchone()[0]
-
-    # 如果表不存在，则新建表
-    if count == 0:
-        cur.execute("create table pesticide (data json)")
-        conn.commit()
-
-    # 执行插入操作
-    cur.execute("insert into pesticide (data) values (%s)", [Json(data)])
-    conn.commit()
+    
     return {"message": "Pesticide added successfully"}
 
 @app.get("/pesticide/{name}")

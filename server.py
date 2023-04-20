@@ -2,58 +2,65 @@ import psycopg2
 from psycopg2.extras import Json
 import json
 
+# 读取json文件
+def read_json():
+    json_data = open('src/nong.json', 'r', encoding='utf-8')
+    data = json_data.read()
+    data = json.loads(data)
+    return data
+
+# 传参给data
+data = read_json()
+
+# 连接数据
 conn = psycopg2.connect(database='postgres', user='postgres',
                         password='aKtALRFAKCRC', host='81.68.157.7', port=5432)
 cur = conn.cursor()
 
-json_data = {
-    "敌敌畏": {
-        "name": "敌敌畏",
-        "type": "杀虫剂",
-        "price": 10,
-        "count": 100,
-        "inventory": 100,
-        "info": {
-                "用途": "杀虫",
-                "用量": "1ml/平方米",
-                "有效期": "1年"
-        }
-    }
-}
+# 创建表
+def creat_table():
+    cur.execute("""
+    SELECT EXISTS (
+        SELECT 1 
+        FROM information_schema.tables 
+        WHERE table_name = 'pesticide'
+    )
+    """)
+    # 判断表是否存在
+    table_exists = cur.fetchone()[0]
 
-# 判断表 pesticide 是否存在
-cur.execute("select count(*) from information_schema.tables where table_schema='public' and table_type='BASE TABLE' and table_name='pesticide'")
-count = cur.fetchone()[0]
-if count == 0:
-    # 根据 JSON 数据的键创建列
+    if not table_exists:
 
-    columns = ", ".join([f"{key} json" for key in json_data.keys()])
-    # print(columns)
-    cur.execute(f"create table pesticide ({columns})")
-    conn.commit()
+        cur.execute("""
+                CREATE TABLE pesticide (
+                    name VARCHAR(255) PRIMARY KEY,
+                    type VARCHAR(255),
+                    unit_price INTEGER,
+                    purchase_quantity INTEGER,
+                    stock INTEGER,
+                    purpose VARCHAR(255),
+                    dosage VARCHAR(255),
+                    expiration_date VARCHAR(255)
+                )
+            """)
+        conn.commit()
 
-# 执行插入操作
-placeholders: str = ", ".join(["%s"] * len(json_data))
-# values: list = list(json_data.values())
-values = [{'name': '敌敌畏', 'type': '杀虫剂', 'price': 10, 'count': 100, 'inventory': 100, 'info': {'用途': '杀虫', '用量': '1ml/平方米', '有效期': '1年'}}]
+# 遍历json键值对
+for pesticide_name, pesticide_data in data.items():
+    cur.execute(
+        "INSERT INTO pesticide (name, type, unit_price, purchase_quantity, stock, purpose, dosage, expiration_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+        (
+            pesticide_data["名称"],
+            pesticide_data["类型"],
+            pesticide_data["单价"],
+            pesticide_data["购买数量"],
+            pesticide_data["库存"],
+            pesticide_data["用途"],
+            pesticide_data["用量"],
+            pesticide_data["有效期"]
+        )
+    )
 
-for d in values:
-    d['info'] = json.dumps(d['info'])
-print(type(d))
-
-# # 构造列名
-# columns: str = ", ".join(values[0].keys())
-
-# # # 构造值
-# values_str: str = ", ".join(["(%s)" % ", ".join(["%s"] * len(values[0]))] * len(values))
-
-# # # 构造 SQL 语句 
-# sql: str = "insert into pesticide (%s) values %s" % (columns, values_str)
-
-# s: list = [v for d in values for v in d.values()]
-
-# # # 执行 SQL 语句
-# cur.execute(sql, json.dumps(s))
 # conn.commit()
 cur.close()
 conn.close()
