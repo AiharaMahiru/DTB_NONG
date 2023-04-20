@@ -47,19 +47,20 @@ def creat_table():
 
 # 遍历json键值对
 for pesticide_name, pesticide_data in data.items():
-    cur.execute(
-        "INSERT INTO pesticide (name, type, unit_price, purchase_quantity, stock, purpose, dosage, expiration_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-        (
-            pesticide_data["名称"],
-            pesticide_data["类型"],
-            pesticide_data["单价"],
-            pesticide_data["购买数量"],
-            pesticide_data["库存"],
-            pesticide_data["用途"],
-            pesticide_data["用量"],
-            pesticide_data["有效期"]
-        )
-    )
+    print(pesticide_name, pesticide_data)
+    # cur.execute(
+    #     "INSERT INTO pesticide (name, type, unit_price, purchase_quantity, stock, purpose, dosage, expiration_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+    #     (
+    #         pesticide_data["名称"],
+    #         pesticide_data["类型"],
+    #         pesticide_data["单价"],
+    #         pesticide_data["购买数量"],
+    #         pesticide_data["库存"],
+    #         pesticide_data["用途"],
+    #         pesticide_data["用量"],
+    #         pesticide_data["有效期"]
+    #     )
+    # )
 
 # conn.commit()
 cur.close()

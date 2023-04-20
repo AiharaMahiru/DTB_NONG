@@ -9,6 +9,7 @@ def connect_db():
     cur = conn.cursor()
     return cur, conn
 
+cur, conn = connect_db()
 
 # 读取json文件
 def read_json():
@@ -63,28 +64,28 @@ def into_data(data):
 
         conn.commit()
 
-def read_data():
-    cur.execute(f"SELECT * FROM pesticide")
+def read_table():
+    cur.execute("SELECT * FROM pesticide")
     rows = cur.fetchall()
-    for row in rows:
-        return row
+    return rows
 
-# def update_data(data):
-#     for pesticide_name, pesticide_data in data.items():
-#         cur.execute(
-#             "UPDATE pesticide SET (name, type, unit_price, purchase_quantity, stock, purpose, dosage, expiration_date) = (%s, %s, %s, %s, %s, %s, %s, %s) WHERE name = %s ",
-#             (
-#                 pesticide_data["名称"],
-#                 pesticide_data["类型"],
-#                 pesticide_data["单价"],
-#                 pesticide_data["购买数量"],
-#                 pesticide_data["库存"],
-#                 pesticide_data["用途"],
-#                 pesticide_data["用量"],
-#                 pesticide_data["有效期"],
-#             )
-#         )
-#     conn.commit()
+def update_data(data):
+    for pesticide_name, pesticide_data in data.items():
+        cur.execute(
+            "UPDATE pesticide SET (name, type, unit_price, purchase_quantity, stock, purpose, dosage, expiration_date) = (%s, %s, %s, %s, %s, %s, %s, %s) WHERE name = %s ",
+            (
+                pesticide_data["名称"],
+                pesticide_data["类型"],
+                pesticide_data["单价"],
+                pesticide_data["购买数量"],
+                pesticide_data["库存"],
+                pesticide_data["用途"],
+                pesticide_data["用量"],
+                pesticide_data["有效期"],
+                pesticide_name
+            )
+        )
+    conn.commit()
 
 def delete_data(NameToDelete):
     cur.execute("DELETE FROM pesticide WHERE name = %s", (f'{NameToDelete}',))

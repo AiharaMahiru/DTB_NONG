@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Request, APIRouter
-import psycopg2
-from lib.pgsql import connect_db, read_json, creat_table, into_data
+from fastapi import Request, APIRouter
+from lib.pgsql import connect_db, creat_table, into_data, read_data
+
 
 app = APIRouter()
 
@@ -17,13 +17,7 @@ async def add_pesticide(request: Request):
     into_data(data)
     return {"message": "Pesticide added successfully"}
 
-@app.get("/pesticide/{name}")
-def get_pesticide(name: str):
-    # 查询数据库中匹配的数据
-    cur.execute("SELECT data FROM pesticide WHERE data->>'name' = %s", (name,))
-    result = cur.fetchone()
-    # 如果有结果，返回json格式的响应，否则返回错误信息
-    if result:
-        return result["data"]
-    else:
-        return {"error": "No such pesticide"}
+@app.get("/data/{name}}")
+async def read_pesticide(name: str):
+    rows = read_data(name)
+    return {"data": rows}
