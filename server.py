@@ -1,5 +1,5 @@
 import psycopg2
-from psycopg2.extras import Json
+# from psycopg2.extras import Json
 import json
 
 # 读取json文件

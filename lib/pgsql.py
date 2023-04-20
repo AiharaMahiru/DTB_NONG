@@ -63,6 +63,34 @@ def into_data(data):
 
         conn.commit()
 
+def read_data():
+    cur.execute(f"SELECT * FROM pesticide")
+    rows = cur.fetchall()
+    for row in rows:
+        return row
+
+# def update_data(data):
+#     for pesticide_name, pesticide_data in data.items():
+#         cur.execute(
+#             "UPDATE pesticide SET (name, type, unit_price, purchase_quantity, stock, purpose, dosage, expiration_date) = (%s, %s, %s, %s, %s, %s, %s, %s) WHERE name = %s ",
+#             (
+#                 pesticide_data["名称"],
+#                 pesticide_data["类型"],
+#                 pesticide_data["单价"],
+#                 pesticide_data["购买数量"],
+#                 pesticide_data["库存"],
+#                 pesticide_data["用途"],
+#                 pesticide_data["用量"],
+#                 pesticide_data["有效期"],
+#             )
+#         )
+#     conn.commit()
+
+def delete_data(NameToDelete):
+    cur.execute("DELETE FROM pesticide WHERE name = %s", (f'{NameToDelete}',))
+    conn.commit()
+
+
 # 创建一个表，如果不存在的话
 # cur.execute("CREATE TABLE IF NOT EXISTS pesticide (id serial PRIMARY KEY, data jsonb);")
 
